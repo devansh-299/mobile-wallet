@@ -27,6 +27,7 @@ import org.mifos.mobilewallet.mifospay.kyc.ui.KYCDescriptionFragment;
 import org.mifos.mobilewallet.mifospay.kyc.ui.KYCLevel1Fragment;
 import org.mifos.mobilewallet.mifospay.kyc.ui.KYCLevel2Fragment;
 import org.mifos.mobilewallet.mifospay.kyc.ui.KYCLevel3Fragment;
+import org.mifos.mobilewallet.mifospay.merchants.ui.MerchantTransferActivity;
 import org.mifos.mobilewallet.mifospay.merchants.ui.MerchantsFragment;
 import org.mifos.mobilewallet.mifospay.notification.ui.NotificationActivity;
 import org.mifos.mobilewallet.mifospay.passcode.ui.PassCodeActivity;
@@ -128,4 +129,7 @@ public interface ActivityComponent {
     void inject(PaymentHubActivity paymentHubActivity);
 
     void inject(PHTransferDialog phTransferDialog);
+
+    void inject(MerchantTransferActivity merchantTransferActivity);
+
 }
