@@ -29,6 +29,8 @@ import org.mifos.mobilewallet.mifospay.domain.model.Bank;
 import org.mifos.mobilewallet.mifospay.utils.Constants;
 import org.mifos.mobilewallet.mifospay.utils.DebugUtil;
 import org.mifos.mobilewallet.mifospay.utils.RecyclerItemClickListener;
+import org.mifos.mobilewallet.mifospay.utils.SimCardUtil;
+import org.mifos.mobilewallet.mifospay.utils.Toaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,7 @@ public class LinkBankAccountActivity extends BaseActivity implements
     private ArrayList<Bank> popularBanks;
 
     private String bankSelected;
+    private int numberOfSimCards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,7 @@ public class LinkBankAccountActivity extends BaseActivity implements
         setToolbarTitle("Link Bank Account");
         showBackButton();
         mPresenter.attachView(this);
-
+        numberOfSimCards = SimCardUtil.getSimCardNumber(this);
         showProgressDialog(Constants.PLEASE_WAIT);
         setupRecyclerview();
         mRvOtherBanks.setNestedScrollingEnabled(false);
@@ -106,9 +109,14 @@ public class LinkBankAccountActivity extends BaseActivity implements
                     public void onItemClick(View childView, int position) {
                         Bank bank = mPopularBankAdapter.getBank(position);
                         bankSelected = bank.getName();
-
-                        ChooseSimDialog chooseSimDialog = new ChooseSimDialog();
-                        chooseSimDialog.show(getSupportFragmentManager(), "Choose Sim Dialog");
+                        if (numberOfSimCards != 0) {
+                            ChooseSimDialog chooseSimDialog = new ChooseSimDialog();
+                            chooseSimDialog.show(getSupportFragmentManager(),
+                                    "Choose Sim Dialog");
+                        } else {
+                            Toaster.showToast(getApplicationContext(),
+                                    getString(R.string.no_sim_found));
+                        }
                     }
                 }));
 
@@ -118,9 +126,14 @@ public class LinkBankAccountActivity extends BaseActivity implements
                     public void onItemClick(View childView, int position) {
                         Bank bank = mOtherBankAdapter.getBank(position);
                         bankSelected = bank.getName();
-
-                        ChooseSimDialog chooseSimDialog = new ChooseSimDialog();
-                        chooseSimDialog.show(getSupportFragmentManager(), "Choose Sim Dialog");
+                        if (numberOfSimCards != 0) {
+                            ChooseSimDialog chooseSimDialog = new ChooseSimDialog();
+                            chooseSimDialog.show(getSupportFragmentManager(),
+                                    "Choose Sim Dialog");
+                        } else {
+                            Toaster.showToast(getApplicationContext(),
+                                    getString(R.string.no_sim_found));
+                        }
                     }
                 }));
 

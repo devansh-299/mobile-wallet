@@ -268,5 +268,9 @@
     <string name="hide_balance">Hide Balance</string>
     <string name="no_bank_account">No bank found</string>
     <string name="error_specific_transactions">Couldn\'t fetch Specific transactions. Please, try again.</string>
+    <string name="no_sim_found">No sim card found</string>
+    <string name="sim_1_selected">Sim 1 selected</string>
+    <string name="sim_2_selected">Sim 2 selected</string>
+    <string name="no_sim_selected">No sim card selected</string>
 
 </resources>

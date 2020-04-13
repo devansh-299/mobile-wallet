@@ -52,34 +52,63 @@
                 android:layout_marginTop="@dimen/value_30dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_sim1"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginEnd="@dimen/value_30dp"
-                    android:layout_marginRight="@dimen/value_30dp"
-                    android:drawablePadding="@dimen/value_15dp"
-                    android:drawableTop="@drawable/sim_card_unselected"
-                    android:gravity="center"
-                    android:textColor="@color/primaryDarkBlue"/>
+                <LinearLayout
+                    android:id="@+id/ll_sim1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_sim1"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:drawableTop="@drawable/sim_card_unselected"
+                        android:gravity="center"
+                        android:textColor="@color/primaryDarkBlue"/>
+
+                    <TextView
+                        android:id="@+id/tv_sim1_name"
+                        android:layout_marginTop="@dimen/value_10dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/primaryDarkBlue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_or"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/value_15dp"
+                    android:layout_marginRight="@dimen/value_15dp"
                     android:gravity="center"
                     android:text="@string/or"
                     android:textColor="@color/grey_900"/>
 
-                <TextView
-                    android:id="@+id/tv_sim2"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginLeft="@dimen/value_30dp"
-                    android:layout_marginStart="@dimen/value_30dp"
-                    android:drawablePadding="@dimen/value_15dp"
-                    android:drawableTop="@drawable/sim_card_unselected"
-                    android:gravity="center"
-                    android:textColor="@color/primaryDarkBlue"/>
+                <LinearLayout
+                    android:id="@+id/ll_sim2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_sim2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:drawableTop="@drawable/sim_card_unselected"
+                        android:gravity="center"
+                        android:textColor="@color/primaryDarkBlue"/>
+
+                    <TextView
+                        android:id="@+id/tv_sim2_name"
+                        android:layout_marginTop="@dimen/value_10dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/primaryDarkBlue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
