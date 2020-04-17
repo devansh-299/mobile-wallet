@@ -25,11 +25,15 @@ public interface BankContract {
     interface LinkBankAccountPresenter extends BasePresenter {
 
         void fetchBankAccountDetails(String bankName);
+
+        void getMobileNumber();
     }
 
     interface LinkBankAccountView extends BaseView<LinkBankAccountPresenter> {
 
         void addBankAccount(BankAccountDetails bankAccountDetails);
+
+        void fetchMobileNumber(String mobileNumber);
     }
 
     interface BankAccountDetailPresenter extends BasePresenter {

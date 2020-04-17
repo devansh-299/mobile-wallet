@@ -65,6 +65,7 @@ public class LinkBankAccountActivity extends BaseActivity implements
     private ArrayList<Bank> popularBanks;
 
     private String bankSelected;
+    private String mobileNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class LinkBankAccountActivity extends BaseActivity implements
         mRvOtherBanks.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL));
 
+        mLinkBankAccountPresenter.getMobileNumber();
         mRvPopularBanks.addOnItemTouchListener(new RecyclerItemClickListener(this,
                 new RecyclerItemClickListener.SimpleOnItemClickListener() {
                     @Override
@@ -107,8 +109,9 @@ public class LinkBankAccountActivity extends BaseActivity implements
                         Bank bank = mPopularBankAdapter.getBank(position);
                         bankSelected = bank.getName();
 
-                        ChooseSimDialog chooseSimDialog = new ChooseSimDialog();
-                        chooseSimDialog.show(getSupportFragmentManager(), "Choose Sim Dialog");
+                        ChooseMobileNumber chooseMobileNumber =
+                                ChooseMobileNumber.newInstance(mobileNumber);
+                        chooseMobileNumber.show(getSupportFragmentManager(), "Choose Sim Dialog");
                     }
                 }));
 
@@ -119,8 +122,9 @@ public class LinkBankAccountActivity extends BaseActivity implements
                         Bank bank = mOtherBankAdapter.getBank(position);
                         bankSelected = bank.getName();
 
-                        ChooseSimDialog chooseSimDialog = new ChooseSimDialog();
-                        chooseSimDialog.show(getSupportFragmentManager(), "Choose Sim Dialog");
+                        ChooseMobileNumber chooseMobileNumber =
+                                ChooseMobileNumber.newInstance(mobileNumber);
+                        chooseMobileNumber.show(getSupportFragmentManager(), "Choose Sim Dialog");
                     }
                 }));
 
@@ -202,7 +206,7 @@ public class LinkBankAccountActivity extends BaseActivity implements
         mLinkBankAccountPresenter = presenter;
     }
 
-    public void linkBankAccount(int selectedSim) {
+    public void linkBankAccount(String mobileNumber) {
         showProgressDialog(Constants.VERIFYING_MOBILE_NUMBER);
         mLinkBankAccountPresenter.fetchBankAccountDetails(bankSelected);
     }
@@ -221,6 +225,11 @@ public class LinkBankAccountActivity extends BaseActivity implements
             }
         }, 1500);
 
+    }
+
+    @Override
+    public void fetchMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 
     @Override

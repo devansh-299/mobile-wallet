@@ -3,6 +3,7 @@ package org.mifos.mobilewallet.mifospay.bank.presenter;
 import org.mifos.mobilewallet.core.domain.model.BankAccountDetails;
 import org.mifos.mobilewallet.mifospay.bank.BankContract;
 import org.mifos.mobilewallet.mifospay.base.BaseView;
+import org.mifos.mobilewallet.mifospay.data.local.PreferencesHelper;
 
 import java.util.Random;
 
@@ -15,11 +16,12 @@ import javax.inject.Inject;
 public class LinkBankAccountPresenter implements BankContract.LinkBankAccountPresenter {
 
     private static final Random mRandom = new Random();
+    private final PreferencesHelper mPreferencesHelper;
     BankContract.LinkBankAccountView mLinkBankAccountView;
 
     @Inject
-    public LinkBankAccountPresenter() {
-
+    public LinkBankAccountPresenter(PreferencesHelper preferencesHelper) {
+        this.mPreferencesHelper = preferencesHelper;
     }
 
     @Override
@@ -34,5 +36,11 @@ public class LinkBankAccountPresenter implements BankContract.LinkBankAccountPre
         mLinkBankAccountView.addBankAccount(
                 new BankAccountDetails(bankName, "Ankur Sharma", "New Delhi",
                         mRandom.nextInt() + " ", "Savings"));
+    }
+
+    @Override
+    public void getMobileNumber() {
+        String mobileNumber = mPreferencesHelper.getMobile();
+        mLinkBankAccountView.fetchMobileNumber(mobileNumber);
     }
 }
