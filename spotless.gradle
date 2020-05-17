@@ -1,0 +1,39 @@
+apply plugin: "com.diffplug.gradle.spotless"
+
+spotless {
+    // For .java files
+    java {
+        target '**/*.java'
+        // Rules applied
+        googleJavaFormat().aosp()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+    // For .kt files
+    kotlin {
+        target '**/*.kt'
+        // Rules applied
+        ktlint()
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+    // For files ending with .gradle, .md and .gitignore extensions
+    format 'misc', {
+        target '**/*.gradle', '**/*.md', '**/.gitignore'
+        // Rules applied
+        indentWithSpaces()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    // For all Xml files
+    format 'xml', {
+        target '**/*.xml'
+        // Rules applied
+        indentWithSpaces()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}

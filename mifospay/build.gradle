@@ -3,6 +3,7 @@ apply from: '../config/quality/quality.gradle'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: "$rootProject.rootDir/spotless.gradle"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion

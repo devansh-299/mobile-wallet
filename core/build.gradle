@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.dcendents.android-maven'
 apply from: '../config/quality/quality.gradle'
+apply from: "$rootProject.rootDir/spotless.gradle"
 
 
 group='com.github.ankurs287'
