@@ -96,6 +96,9 @@ dependencies {
     implementation 'com.github.yalantis:ucrop:2.2.2'
     testImplementation "junit:junit:$rootProject.junitVersion"
 
+    // for mifos-rocketchat library
+    implementation "com.github.devansh-299:mifos-rocketchat:$rootProject.mifosRocketChatVersion"
+
     implementation project(':core')
 }
 
