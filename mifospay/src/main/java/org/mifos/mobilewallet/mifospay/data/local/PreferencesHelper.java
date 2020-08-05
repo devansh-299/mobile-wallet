@@ -28,6 +28,8 @@ public class PreferencesHelper {
     private static final String MOBILE_NO = "preferences_mobile_no";
     private static final String FIREBASE_REG_ID = "preferences_firebase_reg_id";
     private static final String ACCOUNT_ID = "preferences_account_id";
+    private static final String ROCKET_CHAT_SERVER_PROTOCOL = "rocket_chat_server_protocol";
+    private static final String ROCKET_CHAT_SERVER_DOMAIN = "rocket_chat_server_domain";
 
     private SharedPreferences sharedPreferences;
 
@@ -147,6 +149,19 @@ public class PreferencesHelper {
 
     public void setFirebaseRegId(String firebaseRegId) {
         putString(FIREBASE_REG_ID, firebaseRegId);
+    }
+
+    public void saveRocketChatServerConfiguration(String protocol, String domain) {
+        putString(ROCKET_CHAT_SERVER_PROTOCOL, protocol);
+        putString(ROCKET_CHAT_SERVER_DOMAIN, domain);
+    }
+
+    public String getRocketChatServerProtocol() {
+        return getString(ROCKET_CHAT_SERVER_PROTOCOL, "https://");
+    }
+
+    public String getRocketChatServerDomain() {
+        return getString(ROCKET_CHAT_SERVER_DOMAIN, "chat.mifos.io");
     }
 
 }

@@ -49,5 +49,5 @@ ext {
     rxandroidVersion = '1.1.0'
     rxjavaVersion = '1.1.4'
     junitVersion = '4.12'
-    mifosRocketChatVersion = '1.0.0'
+    mifosRocketChatVersion = '1.0.2'
 }

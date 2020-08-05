@@ -2,13 +2,15 @@ package org.mifos.mobilewallet.mifospay.home.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.jetbrains.annotations.NotNull;
 import org.mifos.mobilewallet.core.domain.model.client.Client;
 import org.mifos.mobilewallet.mifospay.R;
 import org.mifos.mobilewallet.mifospay.base.BaseActivity;
@@ -23,12 +25,20 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import chat.rocket.android.authentication.RocketChat;
+import chat.rocket.android.authentication.presentation.RocketChatView;
+import chat.rocket.android.helper.ActivityKtKt;
+import okhttp3.HttpUrl;
+
+import static chat.rocket.android.authentication.RocketChatKt.STATE_ERROR;
+import static chat.rocket.android.authentication.RocketChatKt.STATE_LOADING;
 
 /**
  * Created by naman on 17/6/17.
  */
 
-public class MainActivity extends BaseActivity implements BaseHomeContract.BaseHomeView {
+public class MainActivity extends BaseActivity implements
+        BaseHomeContract.BaseHomeView, RocketChatView {
 
     @Inject
     MainPresenter mPresenter;
@@ -40,6 +50,7 @@ public class MainActivity extends BaseActivity implements BaseHomeContract.BaseH
     BottomNavigationView bottomNavigationView;
 
     BaseHomeContract.BaseHomePresenter mHomePresenter;
+    RocketChat<MainActivity> rocketChat;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,16 +62,38 @@ public class MainActivity extends BaseActivity implements BaseHomeContract.BaseH
 
         mPresenter.attachView(this);
         mHomePresenter.fetchClientDetails();
+        initializeRocketChatSession();
         bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        navigateFragment(item.getItemId(), false);
-                        return true;
-                    }
+                item -> {
+                    navigateFragment(item.getItemId(), false);
+                    return true;
                 });
         bottomNavigationView.setSelectedItemId(R.id.action_home);
         setToolbarTitle(Constants.HOME);
+    }
+
+    private void initializeRocketChatSession() {
+        String userName = "Naman_Wallet";
+        //String roomName = "mobile_wallet_" + localRepository.getClientDetails().getClientId();
+        String roomName = "general";
+        String userEmail = localRepository.getPreferencesHelper().getEmail();
+        String userPassword = "password";
+        String name = localRepository.getClientDetails().getName();
+        String protocol = localRepository.getPreferencesHelper().getRocketChatServerProtocol();
+        String serverDomain = localRepository.getPreferencesHelper().getRocketChatServerDomain();
+        //Log.e("details ", userName + " " + userEmail + " " + name);
+        rocketChat = new RocketChat<>(this,
+                protocol,
+                serverDomain,
+                name,
+                userName,
+                userEmail,
+                userPassword,
+                roomName
+        );
+
+        rocketChat.loadCredentials();
+        Log.d("ROCKETCHAT", rocketChat.getMessage());
     }
 
     @Override
@@ -78,10 +111,58 @@ public class MainActivity extends BaseActivity implements BaseHomeContract.BaseH
             case R.id.item_profile_setting:
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
+            case R.id.item_customer_care:
+                startCustomerService();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void startCustomerService() {
+        if (rocketChat.getState().getValue().equals(STATE_LOADING)) {
+            //showProgress();
+            rocketChat.getState().observe(this,
+                    s -> {
+                        //hideProgress();
+                        if (s.equals(STATE_ERROR)) {
+                            Log.e("RC", "LOADING + ERROR " + rocketChat.getMessage());
+//                                Log.e(HomeActivity.class.getSimpleName(), rocketChat.getMessage());
+//                                Snackbar snackbar = Snackbar
+//                                        .make(findViewById(R.id.container),
+//                                                rocketChat.getMessage(), Snackbar.LENGTH_LONG)
+//                                        .setAction("RETRY", new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View view) {
+//                                                rocketChat.loadCredentials();
+//                                                moveToSupportChannel();
+//                                            }
+//                                        });
+//                                snackbar.show();
+                        } else {
+                            Log.e("RC", "LOADING + SUCCESS" + rocketChat.getMessage());
+                            rocketChat.loadChatRoom();
+                        }
+                    });
+        } else if (rocketChat.getState().getValue().equals(STATE_ERROR)) {
+            Log.e("RC", "ERROR + ERROR" + rocketChat.getMessage());
+//            Log.e(HomeActivity.class.getSimpleName(), rocketChat.getMessage());
+//            Snackbar snackbar = Snackbar
+//                    .make(findViewById(R.id.container),
+//                            rocketChat.getMessage(), Snackbar.LENGTH_LONG)
+//                    .setAction("RETRY", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            rocketChat.loadCredentials();
+//                            moveToSupportChannel();
+//                        }
+//                    });
+//            snackbar.show();
+        } else {
+            Log.e("RC", "ERROR + SUCCESS" + rocketChat.getMessage());
+            rocketChat.loadChatRoom();
+        }
     }
 
     @Override
@@ -136,5 +217,40 @@ public class MainActivity extends BaseActivity implements BaseHomeContract.BaseH
 
             }
         }
+    }
+
+    @Override
+    public void saveSmartLockCredentials(@NotNull String s, @NotNull String s1) {
+        ActivityKtKt.saveCredentials(this, s, s1);
+    }
+
+    @Override
+    public void alertNotRecommendedVersion() {
+
+    }
+
+    @Override
+    public void blockAndAlertNotRequiredVersion() {
+
+    }
+
+    @Override
+    public void errorCheckingServerVersion() {
+
+    }
+
+    @Override
+    public void errorInvalidProtocol() {
+
+    }
+
+    @Override
+    public void updateServerUrl(@NotNull HttpUrl httpUrl) {
+
+    }
+
+    @Override
+    public void versionOk() {
+
     }
 }

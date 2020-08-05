@@ -16,6 +16,7 @@ import org.mifos.mobilewallet.mifospay.injection.component.DaggerApplicationComp
 import org.mifos.mobilewallet.mifospay.injection.module.ApplicationModule;
 
 import butterknife.ButterKnife;
+import chat.rocket.android.app.RocketChatInitializer;
 import chat.rocket.android.app.RocketChatInjector;
 import dagger.android.AndroidInjector;
 
@@ -32,6 +33,7 @@ public class MifosPayApp extends Application implements RocketChatInjector {
     }
 
     ApplicationComponent applicationComponent;
+    RocketChatInitializer rocketChatInitializer;
 
     public static MifosPayApp get(Context context) {
         return (MifosPayApp) context.getApplicationContext();
@@ -51,6 +53,9 @@ public class MifosPayApp extends Application implements RocketChatInjector {
 
         //Initialize ForegroundChecker
         ForegroundChecker.init(this);
+        // For Initializing Rocket.Chat
+        rocketChatInitializer = new RocketChatInitializer(this);
+        rocketChatInitializer.init();
     }
 
     public ApplicationComponent component() {
@@ -70,22 +75,22 @@ public class MifosPayApp extends Application implements RocketChatInjector {
     @NotNull
     @Override
     public AndroidInjector<Worker> workerInjector() {
-        return null;
+        return rocketChatInitializer.workerInjector();
     }
 
     @Override
     public AndroidInjector<Activity> activityInjector() {
-        return null;
+        return rocketChatInitializer.activityInjector();
     }
 
     @Override
     public AndroidInjector<BroadcastReceiver> broadcastReceiverInjector() {
-        return null;
+        return rocketChatInitializer.broadcastReceiverInjector();
     }
 
     @Override
     public AndroidInjector<Service> serviceInjector() {
-        return null;
+        return rocketChatInitializer.serviceInjector();
     }
 }
 
